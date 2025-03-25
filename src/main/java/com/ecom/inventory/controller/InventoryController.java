@@ -1,6 +1,7 @@
 package com.ecom.inventory.controller;
 
 
+import com.ecom.inventory.client.CustomerClient;
 import com.ecom.inventory.dto.InventoryRequestDTO;
 import com.ecom.inventory.dto.InventoryResponseDTO;
 import com.ecom.inventory.service.InventoryService;
@@ -18,9 +19,23 @@ public class InventoryController {
 
     @Autowired
     private InventoryService inventoryService;
+    @Autowired
+    private CustomerClient customerClient;
 
     @PostMapping("/add")
-    public ResponseEntity<InventoryResponseDTO> addInventory(@RequestBody InventoryRequestDTO request) {
+    public ResponseEntity<InventoryResponseDTO> addInventory(
+            @RequestBody InventoryRequestDTO request,
+            @RequestHeader("Authorization") String token) {
+
+        // Extract JWT token (Remove "Bearer " prefix)
+        String jwtToken = token.replace("Bearer ", "");
+
+        // Validate if the user is an admin
+        boolean isAdmin = customerClient.isAdmin(jwtToken);
+        if (!isAdmin) {
+            return ResponseEntity.status(403).build(); // Forbidden if not admin
+        }
+
         return ResponseEntity.ok(inventoryService.addInventory(request));
     }
 
