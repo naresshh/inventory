@@ -27,6 +27,7 @@ public class InventoryTransaction {
     private String transactionType; // E.g., "Order Deduction", "Manual Adjustment"
     private String reason;         // E.g., "Order #123", "Customer Request"
     private LocalDateTime transactionDate; // Transaction date for auditing
+    private Long lastUpdatedByAdminId;
 
     public Long getId() {
         return id;
@@ -90,5 +91,13 @@ public class InventoryTransaction {
 
     public void setTransactionDate(LocalDateTime transactionDate) {
         this.transactionDate = transactionDate;
+    }
+
+    public Long getLastUpdatedByAdminId() {
+        return lastUpdatedByAdminId;
+    }
+
+    public void setLastUpdatedByAdminId(Long lastUpdatedByAdminId) {
+        this.lastUpdatedByAdminId = lastUpdatedByAdminId;
     }
 }

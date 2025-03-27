@@ -70,4 +70,12 @@ public class Inventory {
     public void setVersion(Integer version) {
         this.version = version;
     }
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
 }

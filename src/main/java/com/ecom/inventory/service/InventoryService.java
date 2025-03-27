@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class InventoryService {
 
+    public Object deleteByProductId;
     @Autowired
     private InventoryRepository repository;
 
@@ -108,5 +109,38 @@ public class InventoryService {
                 .orElseThrow(() -> new InventoryNotFoundException("Inventory not found for productId: " + productId));
 
         return mapper.toDTO(inventory);
+    }
+
+    public List<InventoryResponseDTO> getAllInventory() {
+        List<Inventory> inventoryList = repository.findAll();
+
+        return inventoryList.stream()
+                .map(mapper::toDTO)  // Calls `toDTO(Inventory inventory)`
+                .collect(Collectors.toList());
+    }
+
+    public InventoryResponseDTO updateInventoryQuantity(Long id, InventoryRequestDTO request) {
+        // Find the inventory by ID
+        Inventory inventory = repository.findByProductId(id).orElseThrow(() -> new RuntimeException("Inventory not found"));
+
+        // Update the quantity
+        inventory.setQuantity(request.getQuantity());
+
+        // Save the updated inventory and return the response DTO
+        repository.save(inventory);
+
+        // Map and return updated inventory as DTO
+        return mapper.toDTO(inventory);
+    }
+
+    @Transactional
+    public void deleteByProductId(Long productId) {
+        // Check if inventory exists
+        Inventory inventory = repository.findByProductId(productId)
+                .orElseThrow(() -> new RuntimeException("Inventory not found"));
+
+        transactionRepository.deleteByInventoryId(productId);
+        // If exists, delete it
+        repository.delete(inventory);  // This will delete the inventory entry
     }
 }
