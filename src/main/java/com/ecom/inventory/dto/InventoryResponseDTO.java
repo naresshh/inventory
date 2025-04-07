@@ -10,9 +10,9 @@ import lombok.*;
 @Data
 public class InventoryResponseDTO {
     private Long productId;
-    private String productName;
+    private String productTitle;
     private Integer quantity;
-
+    private String message;
     public Long getProductId() {
         return productId;
     }
@@ -21,12 +21,12 @@ public class InventoryResponseDTO {
         this.productId = productId;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getProductTitle() {
+        return productTitle;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setProductTitle(String productTitle) {
+        this.productTitle = productTitle;
     }
 
     public Integer getQuantity() {
@@ -37,4 +37,11 @@ public class InventoryResponseDTO {
         this.quantity = quantity;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

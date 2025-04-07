@@ -14,6 +14,7 @@ import com.ecom.inventory.repository.InventoryTransactionRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -40,7 +41,7 @@ public class InventoryService {
      * Add product to inventory (stocking)
      */
     @Transactional
-    public InventoryResponseDTO addInventory(InventoryRequestDTO requestDTO) {
+    public ResponseEntity<InventoryResponseDTO> addInventory(InventoryRequestDTO requestDTO) {
         ProductResponseDTO product = productClient.getProductDetails(requestDTO.getProductId());
 
         if (product == null) {
@@ -53,18 +54,24 @@ public class InventoryService {
         if (inventory == null) {
             // New inventory - just set the quantity
             inventory = mapper.toEntity(requestDTO);
-            inventory.setProductName(product.getName());
-            inventory.setCategory(product.getCategoryId());
+            inventory.setProductName(product.getProductTitle());
+            inventory.setCategoryId(product.getCategoryId());
             inventory.setQuantity(requestDTO.getQuantity());
+            if(product.getCategoryId()!=null){
+                inventory.setCategoryId(product.getCategoryId());
+            }
         } else {
             // Existing inventory - increment the quantity
             inventory.setQuantity(inventory.getQuantity() + requestDTO.getQuantity());
         }
         repository.save(inventory);
 
-        return mapper.toDTO(inventory);
-    }
+        InventoryResponseDTO response = mapper.toDTO(inventory);
+        response.setMessage("Item added successfully!");
 
+        return ResponseEntity.ok(response);
+
+    }
     // Deduct inventory for a list of products
     public List<InventoryResponseDTO> deductInventory(List<InventoryRequestDTO> requestDTOList,Long customerId) {
         // Create a list to hold the response DTOs for each inventory update
@@ -100,7 +107,6 @@ public class InventoryService {
 
 
     }
-
     /**
      * Check product inventory
      */

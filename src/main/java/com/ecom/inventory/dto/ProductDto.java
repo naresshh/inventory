@@ -1,16 +1,18 @@
 package com.ecom.inventory.dto;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Data
-public class ProductResponseDTO {
+public class ProductDto {
+
     private Integer productId;
     private String productTitle;
     private String sku;
     private Double priceUnit;
     private Integer quanity;
-    private Integer categoryId;
-    // Add fields if there are more in your ProductService response
+
+    private CategoryDto category;
+
     public Integer getProductId() {
         return productId;
     }
@@ -51,11 +53,11 @@ public class ProductResponseDTO {
         this.quanity = quanity;
     }
 
-    public Integer getCategoryId() {
-        return categoryId;
+    public CategoryDto getCategory() {
+        return category;
     }
 
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
+    public void setCategory(CategoryDto category) {
+        this.category = category;
     }
 }

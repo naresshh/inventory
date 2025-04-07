@@ -1,5 +1,6 @@
 package com.ecom.inventory.client;
 
+import com.ecom.inventory.dto.ProductDto;
 import com.ecom.inventory.dto.ProductResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,13 +37,31 @@ public class ProductClient {
 
     public ProductResponseDTO getProductDetails(Long productId) {
         try {
-            return restClient.get()
-                    .uri(productServiceBaseUrl+ "/"+ productId)
+            ProductDto productDto = restClient.get()
+                    .uri(productServiceBaseUrl + "/" + productId)
                     .retrieve()
-                    .body(ProductResponseDTO.class);
+                    .body(ProductDto.class);
+
+            if (productDto == null) {
+                throw new RuntimeException("Product not found");
+            }
+
+            ProductResponseDTO responseDTO = new ProductResponseDTO();
+            responseDTO.setProductId(productDto.getProductId());
+            responseDTO.setProductTitle(productDto.getProductTitle());
+            responseDTO.setSku(productDto.getSku());
+            responseDTO.setPriceUnit(productDto.getPriceUnit());
+            responseDTO.setQuanity(productDto.getQuanity());
+
+            if (productDto.getCategory() != null) {
+                responseDTO.setCategoryId(productDto.getCategory().getCategoryId());
+            }
+
+            return responseDTO;
 
         } catch (RestClientException e) {
-            throw new RuntimeException("Unable to fetch product details from Product Service");
+            throw new RuntimeException("Unable to fetch product details from Product Service", e);
         }
     }
+
 }

@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/inventory")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:5173")
 @RequiredArgsConstructor
 public class InventoryController {
 
@@ -45,7 +45,10 @@ public class InventoryController {
             throw new AdminAccessException("Error checking admin status", e);
         }
 
-        return ResponseEntity.ok(inventoryService.addInventory(request));
+        InventoryResponseDTO responseDTO = inventoryService.addInventory(request).getBody();
+
+        // Return the response with a successful message
+        return ResponseEntity.ok(responseDTO);
     }
 
     @PostMapping("/deduct")

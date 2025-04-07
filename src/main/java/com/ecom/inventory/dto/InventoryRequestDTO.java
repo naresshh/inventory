@@ -12,6 +12,7 @@ public class InventoryRequestDTO {
     private Long productId;
     private Integer quantity;
     private Long orderId;
+    private String productTitle;
 
     public Long getProductId() {
         return productId;
@@ -35,5 +36,13 @@ public class InventoryRequestDTO {
 
     public void setOrderId(Long orderId) {
         this.orderId = orderId;
+    }
+
+    public String getProductTitle() {
+        return productTitle;
+    }
+
+    public void setProductTitle(String productTitle) {
+        this.productTitle = productTitle;
     }
 }

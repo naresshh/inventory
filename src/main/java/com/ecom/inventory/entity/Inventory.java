@@ -19,9 +19,10 @@ public class Inventory {
     private Long productId;     // Product ID from Product Service
     private String productName; // For reference / convenience
     private Integer quantity;
-    private Long categoryId;
+    private Integer categoryId;
     @Version
     private Integer version;    // For optimistic locking
+
 
     public Long getId() {
         return id;
@@ -55,11 +56,11 @@ public class Inventory {
         this.quantity = quantity;
     }
 
-    public Long getCategory() {
+    public Integer getCategoryId() {
         return categoryId;
     }
 
-    public void setCategory(Long categoryId) {
+    public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
     }
 
@@ -69,13 +70,5 @@ public class Inventory {
 
     public void setVersion(Integer version) {
         this.version = version;
-    }
-
-    public Long getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
     }
 }
